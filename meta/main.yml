@@ -1,0 +1,24 @@
+galaxy_info:
+  author: David Pujadas
+  description: Ansible role to install duplicity (and duply) on Ubuntu server.
+
+  license: MIT
+
+  min_ansible_version: 2.1
+
+  platforms:
+  - name: Ubuntu
+    versions:
+      - trusty
+      - xenial
+
+  galaxy_tags:
+    - ubuntu
+    - duplicity
+    - duply
+
+dependencies:
+- name: python-pip
+  src: 'https://github.com/dpujadas/ansible-role-python-pip.git'
+  scm: git
+  version: master

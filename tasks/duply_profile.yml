@@ -1,0 +1,24 @@
+- name: Create duply profile
+  shell: >
+    su {{ duplicity_user }} -c "duply {{ duply_profile.key }} create"
+  args:
+    creates: '~{{ duplicity_user }}/.duply/{{ duply_profile.key }}'
+
+- name: Configure duply profile
+  template:
+    dest: '~{{ duplicity_user }}/.duply/{{ duply_profile.key }}/conf'
+    src: 'duply_profile_conf.j2'
+
+- name: Setup exclude file
+  template:
+    dest: '~{{ duplicity_user }}/.duply/{{ duply_profile.key }}/exclude'
+    src: 'profile-exclude.j2'
+
+- name: Setup cron job
+  cron:
+    name: 'Backup {{ duply_profile.key }} profile'
+    state: 'present'
+    job: '{{ duplicity_bin_path }}/silence-unless-failed {{ duplicity_bin_path }}/duply {{ duply_profile.key }} backup_purge --force'
+    special_time: '{{ duply_profile.value.cron }}'
+    user: '{{ duplicity_user }}'
+  when: duply_profile.value.cron is defined

@@ -1,0 +1,5 @@
+{% if duply_profile.value.exclude is defined %}
+{% for line in duply_profile.value.exclude %}
+{{ line }}
+{% endfor %}
+{% endif %}

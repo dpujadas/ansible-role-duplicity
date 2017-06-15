@@ -1,0 +1,53 @@
+- block:
+    - name: Install required packages
+      apt:
+        name: '{{ item }}'
+      with_items:
+        - 'build-essential'
+        - 'python-dev'
+        - 'libssl-dev'
+
+    - name: Install required pip packages
+      pip:
+        name: '{{ item }}'
+      with_items:
+        - urllib3
+        - pyopenssl
+        - ndg-httpsclient
+        - pyasn1
+  when: ansible_python_version | version_compare('2.7.9', '<')
+
+- name: Download duply
+  get_url:
+    url: '{{ duplicity_duply_url }}'
+    dest: '/usr/local/src'
+  register: duplicity_duply_download
+
+- name: Set duplicity_duply_basename
+  set_fact:
+    duplicity_duply_basename: '{{ duplicity_duply_download.dest | basename }}'
+
+- name: Install duply executable
+  shell: >
+    /bin/tar -C {{ duplicity_bin_path }}/ -zxf /usr/local/src/{{ duplicity_duply_basename }} {{ duplicity_duply_basename.replace(".tgz","") }}/duply --strip-components=1
+  when: duplicity_duply_download.changed
+
+- name: Set file properties
+  file:
+    path: '{{ duplicity_bin_path }}/duply'
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Install silence-unless-failed script
+  copy:
+    src: 'silence-unless-failed'
+    dest: '{{ duplicity_bin_path }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+- include: duply_profile.yml
+  with_dict: '{{ duplicity_duply_profiles }}'
+  loop_control:
+    loop_var: duply_profile

@@ -1,0 +1,16 @@
+- name: Install required pip packages
+  pip:
+    name: '{{ item.name }}'
+    version: '{{ item.version|d(omit) }}'
+  with_items: '{{ duplicity_required_pip_packages }}'
+
+- name: Add duplicity repos
+  apt_repository:
+    repo: 'ppa:duplicity-team/ppa'
+    state: 'present'
+    update_cache: 'yes'
+
+- name: Install the duplicity package
+  apt:
+    name: 'duplicity'
+    state: 'present'

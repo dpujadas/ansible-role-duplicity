@@ -1,0 +1,12 @@
+---
+# tasks file for duplicity
+
+- include: duplicity.yml
+  tags:
+    - duplicity
+
+- include: duply.yml
+  when: duplicity_use_duply
+  tags:
+    - duplicity
+    - duply

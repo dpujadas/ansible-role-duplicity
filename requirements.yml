@@ -1,0 +1,5 @@
+## Just for travis testing, dependencies are managed by meta/main.yml
+# python-pip
+- src: https://github.com/dpujadas/ansible-role-python-pip.git
+  version: master
+  name: python-pip

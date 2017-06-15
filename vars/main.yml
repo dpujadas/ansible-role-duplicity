@@ -1,0 +1,4 @@
+duplicity_required_pip_packages:
+  - name: boto
+duplicity_duply_url: 'http://sourceforge.net/projects/ftplicity/files/latest/download?source=files'
+duplicity_bin_path: '/usr/local/bin'
