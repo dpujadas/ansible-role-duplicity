@@ -14,6 +14,20 @@
     dest: '~{{ duplicity_user }}/.duply/{{ duply_profile.key }}/exclude'
     src: 'profile-exclude.j2'
 
+- name: Setup pre script
+  template:
+    dest: '~{{ duplicity_user }}/.duply/{{ duply_profile.key }}/pre'
+    src: '{{ duply_profile.value.pre }}'
+    mode: '0700'
+  when: duply_profile.value.pre is defined
+
+- name: Setup post script
+  template:
+    dest: '~{{ duplicity_user }}/.duply/{{ duply_profile.key }}/post'
+    src: '{{ duply_profile.value.post }}'
+    mode: '0700'
+  when: duply_profile.value.post is defined
+
 - name: Setup cron job
   cron:
     name: 'Backup {{ duply_profile.key }} profile'

@@ -8,3 +8,5 @@ duplicity_duply_profiles: {}
 #     max_fullbkp_age:  Max time from last full backup (Ex: '2W')
 #     cron:             Special time for cronjob (Ex: 'daily')
 #     exclude: []       If set, list of globs to include/exclude (http://duplicity.nongnu.org/duplicity.1.html#sect9)
+#     pre:              If set, this script is executed before the backup
+#     post:             If set, this script is executed after the backup
